@@ -1,0 +1,31 @@
+version: '3.6'
+
+services:
+
+  keycloak:
+      image: jboss/keycloak
+      environment:
+          - KEYCLOAK_LOGLEVEL=DEBUG
+          - KEYCLOAK_USER=admin
+          - KEYCLOAK_PASSWORD=admin
+          - DB_VENDOR=H2
+      ports:
+          - 8090:8080
+          - 9999:9990
+          - 443:8443
+      volumes:
+          - ./data:/data
+
+  app1:
+      image: php:7.1-apache
+      ports:
+          - 8091:80
+      volumes:
+          - ./app1:/var/www/html
+
+  app2:
+      image: php:7.1-apache
+      ports:
+          - 8092:80
+      volumes:
+          - ./app2:/var/www/html

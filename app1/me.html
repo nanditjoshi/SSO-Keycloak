@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AAAA - My Account</title>
+    <script src="https://zeptojs.com/zepto.min.js"></script>
+    <script src="http://localhost:8090/auth/js/keycloak.js"></script>
+    <script src="http://localhost:8091/app.js"></script>
+</head>
+<body>
+<h2 id="page-title">web-app-1: User Info</h2>
+<div id="main"></div>
+<script defer>
+console.log(window.keycloak);
+$('#main').after($('<div>----<h3>keycloak</h3><pre><code>' + JSON.stringify(window.keycloak, null, '\t') + '</code></pre></div>'));
+
+window.keycloak.loadUserInfo()
+    .success(function(data) {
+        $('#main').append($('<h3>userInfo</h3>'));
+        $('#main').append($('<pre>' + JSON.stringify(data, null, '\t') + '</pre>'));
+        $('#main').append($('<a>', {
+            text: 'back to homepage',
+            href: 'http://localhost:8091'
+        }));
+    }.bind(this))
+    .error(function() {
+        $('#page-title').html('Please login again. Jump to homepage in 2 seconds . . .');
+        setTimeout(function(){
+            window.keycloak.logout({
+                'redirectUri': 'http://localhost:8091/index.html'
+            });
+        }, 2000);
+    }.bind(this));
+
+window.keycloak.loadUserProfile()
+    .success(function(data) {
+        $('#main').append($('<h3>userProfile</h3>'));
+        $('#main').append($('<pre>' + JSON.stringify(data, null, '\t') + '</pre>'));
+        $('#main').append($('<a>', {
+            text: 'back to homepage',
+            href: 'http://localhost:8091'
+        }));
+    }.bind(this))
+    .error(function() {
+        $('#page-title').html('Please login again. Jump to homepage in 2 seconds . . .');
+        setTimeout(function(){
+            window.keycloak.logout({
+                'redirectUri': 'http://localhost:8091/index.html'
+            });
+        }, 2000);
+    }.bind(this));
+
+
+
+
+
+// var loadData = function () {
+//     //document.getElementById('username').innerText = keycloak.subject;
+
+//     var url = 'http://localhost:8090/restful-service';
+
+//     var req = new XMLHttpRequest();
+//     req.open('GET', url, true);
+//     req.setRequestHeader('Accept', 'application/json');
+//     req.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+
+//     req.onreadystatechange = function () {
+//         if (req.readyState == 4) {
+//             if (req.status == 200) {
+//                 alert('Success');
+//             } else if (req.status == 403) {
+//                 alert('Forbidden');
+//             }
+//         }
+//     }
+
+//     req.send();
+// };
+
+// loadData();
+
+// keycloak.updateToken(30).success(function() {
+//     loadData();
+// }).error(function() {
+//     alert('Failed to refresh token');
+// });
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BBBB - My Account</title>
+    <script src="https://zeptojs.com/zepto.min.js"></script>
+    <script src="http://localhost:8090/auth/js/keycloak.js"></script>
+    <script src="http://localhost:8092/app.js"></script>
+</head>
+<body>
+<h2 id="page-title">web-app-2: User Info</h2>
+<div id="main"></div>
+<script>
+    $(function () {
+        window.keycloak.loadUserProfile()
+            .success(function(data) {
+                $('#main').after($('<pre>' + JSON.stringify(data, null, '\t') + '</pre>'));
+                $('#main').after($('<a>', {
+                    text: 'back to homepage',
+                    href: 'http://localhost:8092'
+                }));
+            }.bind(this))
+            .error(function() {
+               $('#page-title').html('Please login again. Jump to homepage in 2 seconds . . .');
+                setTimeout(function(){
+                    window.keycloak.logout({
+                        'redirectUri': 'http://localhost:8092/index.html'
+                    });
+                }, 2000);
+            }.bind(this));
+    });
+
+</script>
+</body>
+</html>

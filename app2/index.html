@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://zeptojs.com/zepto.min.js"></script>
+    <script src="http://localhost:8090/auth/js/keycloak.js"></script>
+    <script src="http://localhost:8092/app.js"></script>
+    <title>web-app-2</title>
+</head>
+<body>
+<h1>Web App 2</h1>
+<nav role="navigation">
+    <ul>
+        <li>
+            <a title="login" id="login" href="http://localhost:8092/me.html">My Account</a>
+        </li>
+        <li>
+            <a title="logout" id="logout" href="http://localhost:8092">logout</a>
+        </li>
+    </ul>
+</nav>
+<script>
+    $(function () {
+        $('#login').on('click', function(e) {
+            e.preventDefault();
+
+            window.keycloak.login({
+                'redirectUri': 'http://localhost:8092/me.html'
+            });
+        });
+        $('#logout').on('click', function(e) {
+            e.preventDefault();
+
+            window.keycloak.logout({
+                'redirectUri': 'http://localhost:8092/index.html'
+            });
+        });
+    });
+</script>
+</body>
+</html>
